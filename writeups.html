@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Write-ups \u2014 David Griffo</title>
+<title>Write-ups — David Griffo</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -60,6 +60,7 @@
     padding: 18px 32px;
     max-width: 1120px;
     margin: 0 auto;
+    position: relative;
   }
   .navrow .mark{
     font-family: var(--mono);
@@ -77,6 +78,64 @@
   nav.links a:hover{ color: var(--paper); }
   nav.links a.current{ color: var(--amber); }
 
+  .menu-toggle{
+    display:none;
+    background: none;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+  }
+  .menu-toggle span{
+    position:absolute;
+    left: 9px; right: 9px;
+    height: 1px;
+    background: var(--paper);
+    transition: transform 160ms ease, opacity 160ms ease;
+  }
+  .menu-toggle span:nth-child(1){ top: 14px; }
+  .menu-toggle span:nth-child(2){ top: 20px; }
+  .menu-toggle span:nth-child(3){ top: 26px; }
+  .menu-toggle[aria-expanded="true"] span:nth-child(1){ top: 20px; transform: rotate(45deg); }
+  .menu-toggle[aria-expanded="true"] span:nth-child(2){ opacity: 0; }
+  .menu-toggle[aria-expanded="true"] span:nth-child(3){ top: 20px; transform: rotate(-45deg); }
+
+  @media (max-width: 860px){
+    .menu-toggle{ display:block; }
+    nav.links{
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--panel);
+      border-bottom: 1px solid var(--rule);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 220ms ease;
+    }
+    nav.links.open{ max-height: 320px; }
+    nav.links a{
+      padding: 16px 20px;
+      border-top: 1px solid var(--rule);
+      font-size: 16px;
+    }
+  }
+
+  .private-stamp{
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(64px, 12vw, 140px);
+    line-height: 0.9;
+    margin: 0 0 8px;
+    color: var(--alert);
+    letter-spacing: 0.01em;
+  }
   .page-head{
     padding: 72px 0 48px;
     border-bottom: 1px solid var(--rule);
@@ -174,22 +233,26 @@
 <header class="top">
   <div class="navrow">
     <div class="mark">DG / <strong>security practice</strong></div>
-    <nav class="links">
+    <nav class="links" id="nav-links">
       <a href="index.html#focus">Focus</a>
       <a href="index.html#experience">Experience</a>
       <a href="index.html#certifications">Certifications</a>
       <a href="index.html#contact">Contact</a>
       <a href="writeups.html" class="current">Write-ups</a>
     </nav>
+    <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
 
 <main class="wrap">
 
   <div class="page-head">
-    <p class="eyebrow"><span class="dot"></span>Restricted \u2014 internal notes</p>
+    <p class="private-stamp">Private</p>
+    <p class="eyebrow"><span class="dot"></span>Restricted — internal notes</p>
     <h1 class="page-title">Write-ups &amp; field notes</h1>
-    <p class="lede">Engagement notes, lab research, and post-incident reviews. This page is intended to sit behind Cloudflare Access \u2014 treat anything visible here as pending access control.</p>
+    <p class="lede">Engagement notes, lab research, and post-incident reviews. This page is intended to sit behind Cloudflare Access — treat anything visible here as pending access control.</p>
   </div>
 
   <div class="writeups">
@@ -202,7 +265,7 @@
       <div class="wu-body">
         <h3>Lateral movement via misconfigured service accounts</h3>
         <p>Notes from an internal engagement where a shared service account with excessive Active Directory privileges allowed pivoting from a low-value host to domain admin in under three hours.</p>
-        <p class="stub">Full write-up pending \u2014 add findings, timeline, and remediation notes here.</p>
+        <p class="stub">Full write-up pending — add findings, timeline, and remediation notes here.</p>
       </div>
     </div>
 
@@ -214,7 +277,7 @@
       <div class="wu-body">
         <h3>Post-incident review: credential stuffing against a customer portal</h3>
         <p>Root-cause breakdown of an automated login attack, what the monitoring stack missed, and the rate-limiting and alerting changes that followed.</p>
-        <p class="stub">Full write-up pending \u2014 add detection gaps and remediation timeline here.</p>
+        <p class="stub">Full write-up pending — add detection gaps and remediation timeline here.</p>
       </div>
     </div>
 
@@ -226,7 +289,7 @@
       <div class="wu-body">
         <h3>Privilege escalation through an over-permissioned IAM role</h3>
         <p>How an unused deployment role with broad permissions became a viable escalation path, and the least-privilege redesign that closed it.</p>
-        <p class="stub">Full write-up pending \u2014 add technical detail and diagrams here.</p>
+        <p class="stub">Full write-up pending — add technical detail and diagrams here.</p>
       </div>
     </div>
 
@@ -237,8 +300,8 @@
       </div>
       <div class="wu-body">
         <h3>Business logic flaw in a multi-tenant billing flow</h3>
-        <p>A quiet authorization gap that let one tenant view another's invoice data \u2014 no exploit tooling required, just careful manual testing.</p>
-        <p class="stub">Full write-up pending \u2014 add reproduction steps and fix verification here.</p>
+        <p>A quiet authorization gap that let one tenant view another's invoice data — no exploit tooling required, just careful manual testing.</p>
+        <p class="stub">Full write-up pending — add reproduction steps and fix verification here.</p>
       </div>
     </div>
 
@@ -247,9 +310,26 @@
 </main>
 
 <footer class="wrap">
-  <span>David Griffo \u2014 Security Practice</span>
+  <span>David Griffo — Security Practice</span>
   <span>&copy; 2026</span>
 </footer>
 
+
+<script>
+  (function(){
+    var btn = document.getElementById('menu-toggle');
+    var nav = document.getElementById('nav-links');
+    btn.addEventListener('click', function(){
+      var open = nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    nav.addEventListener('click', function(e){
+      if (e.target.tagName === 'A'){
+        nav.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
+</script>
 </body>
 </html>
