@@ -68,6 +68,7 @@
     padding: 18px 32px;
     max-width: 1120px;
     margin: 0 auto;
+    position: relative;
   }
   .navrow .mark{
     font-family: var(--mono);
@@ -83,6 +84,55 @@
     font-size: 15px;
   }
   nav.links a:hover{ color: var(--paper); }
+
+  .menu-toggle{
+    display:none;
+    background: none;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+  }
+  .menu-toggle span{
+    position:absolute;
+    left: 9px; right: 9px;
+    height: 1px;
+    background: var(--paper);
+    transition: transform 160ms ease, opacity 160ms ease;
+  }
+  .menu-toggle span:nth-child(1){ top: 14px; }
+  .menu-toggle span:nth-child(2){ top: 20px; }
+  .menu-toggle span:nth-child(3){ top: 26px; }
+  .menu-toggle[aria-expanded="true"] span:nth-child(1){ top: 20px; transform: rotate(45deg); }
+  .menu-toggle[aria-expanded="true"] span:nth-child(2){ opacity: 0; }
+  .menu-toggle[aria-expanded="true"] span:nth-child(3){ top: 20px; transform: rotate(-45deg); }
+
+  @media (max-width: 860px){
+    .menu-toggle{ display:block; }
+    nav.links{
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--panel);
+      border-bottom: 1px solid var(--rule);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 220ms ease;
+    }
+    nav.links.open{ max-height: 320px; }
+    nav.links a{
+      padding: 16px 20px;
+      border-top: 1px solid var(--rule);
+      font-size: 16px;
+    }
+  }
 
   /* ---------- HERO ---------- */
   .hero{
@@ -318,7 +368,6 @@
   @media (max-width: 860px){
     .wrap{ padding: 0 20px; }
     .navrow{ padding: 16px 20px; }
-    nav.links{ display:none; }
     .hero{ grid-template-columns: 1fr; padding: 64px 0 56px; }
     .radar-wrap{ order:-1; max-width: 220px; margin: 0 auto 12px; }
     .section-head, .section-body, .contact{ grid-template-columns: 1fr; gap: 16px; }
@@ -332,13 +381,16 @@
 <header class="top">
   <div class="navrow">
     <div class="mark">DG / <strong>security practice</strong></div>
-    <nav class="links">
+    <nav class="links" id="nav-links">
       <a href="#focus">Focus</a>
       <a href="#experience">Experience</a>
       <a href="#certifications">Certifications</a>
       <a href="#contact">Contact</a>
       <a href="writeups.html">Write-ups</a>
     </nav>
+    <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
 
@@ -518,5 +570,22 @@
   <span>&copy; 2026</span>
 </footer>
 
+
+<script>
+  (function(){
+    var btn = document.getElementById('menu-toggle');
+    var nav = document.getElementById('nav-links');
+    btn.addEventListener('click', function(){
+      var open = nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    nav.addEventListener('click', function(e){
+      if (e.target.tagName === 'A'){
+        nav.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
+</script>
 </body>
 </html>
